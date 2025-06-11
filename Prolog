@@ -1,0 +1,108 @@
+Zadanie 2
+
+Napisz program w Prologu, który pozwoli na pokolorowanie pięciu sąsiadujących ze sobą województw (Podkarpackie, Lubelskie, Mazowieckie, Podlaskie i Warmińsko-Mazurskie), w taki sposób, aby województwa które są sąsiadami, nie posiadały tego samego koloru. Użyj w tym celu tylko trzech kolorów.
+
+% Sąsiedztwo województw
+sasiaduje(podkarpackie, lubelskie).
+sasiaduje(lubelskie, mazowieckie).
+sasiaduje(mazowieckie, podlaskie).
+sasiaduje(mazowieckie, warminsko_mazurskie).
+sasiaduje(podlaskie, warminsko_mazurskie).
+
+% Kolory: czerwony, zielony, niebieski
+kolor(czerwony).
+kolor(zielony).
+kolor(niebieski).
+
+kolorowanie(W1, W2, W3, W4, W5) :-
+    kolor(K1), kolor(K2), kolor(K3), kolor(K4), kolor(K5),
+    W1 = [podkarpackie, K1],
+    W2 = [lubelskie, K2],
+    W3 = [mazowieckie, K3],
+    W4 = [podlaskie, K4],
+    W5 = [warminsko_mazurskie, K5],
+    \+ (sasiaduje(A, B), member([A,Ka], [W1,W2,W3,W4,W5]), member([B,Kb], [W1,W2,W3,W4,W5]), Ka = Kb).
+
+KOMENDA: kolorowanie(W1, W2, W3, W4, W5).
+
+
+Zadanie 3
+
+Napisz program obliczający największy wspólny dzielnik dwóch dodatnich liczb całkowitych nww(X, Y, Nww) za pomocą algorytmu Euklidesa z odejmowaniem wg algorytmu zapisanego imperatywnie:
+
+nwd(X, X, X).
+nwd(X, Y, Wynik) :-
+    X > Y, X1 is X - Y, nwd(X1, Y, Wynik).
+nwd(X, Y, Wynik) :-
+    Y > X, Y1 is Y - X, nwd(X, Y1, Wynik).
+
+KOMENDA: nwd(36, 48, Wynik).
+
+
+Zadanie 4
+
+Fabryka produkuje kilka różnych produktów, nazwijmy je p1, p2 i p3. Produkty są produkowane ze składników, które nazwijmy s1, s2, s3 i s4. Zbuduj prologową bazę danych, która będzie przechowywała następujące informacje:
+
+% Składniki potrzebne do produktów
+skladnik(p1, s1).
+skladnik(p1, s2).
+skladnik(p2, s2).
+skladnik(p2, s3).
+skladnik(p3, s1).
+skladnik(p3, s4).
+
+% Dostępne składniki
+dostepny(s1).
+dostepny(s2).
+dostepny(s3).
+dostepny(s4).
+
+mozna_produkowac(X) :-
+    \+ (skladnik(X, Y), \+ dostepny(Y)).
+
+potrzebuje(X, Y) :-
+    skladnik(X, Y).
+
+Zadanie 7
+
+Zdefiniuj predykat należy(X, Lista), który sprawdza, czy element X należy do listy Lista. Na przykład należy(a, [a, b, c]). powinno zwrócić true.
+
+nalezy(X, [X|_]).
+nalezy(X, [_|T]) :- nalezy(X, T).
+
+
+Zadanie 8
+
+Zdefiniuj predykat długość(Lista, Dł), który oblicza długość listy Lista i zapisuje ją w Dł.
+
+dlugosc([], 0).
+dlugosc([_|T], N) :- dlugosc(T, N1), N is N1 + 1.
+
+
+Zadanie 9
+
+Napisz predykat suma(Lista, S), który oblicza sumę wszystkich elementów w liście Lista i zapisuje wynik w S.
+
+suma([], 0).
+suma([H|T], S) :- suma(T, S1), S is H + S1.
+
+
+Zadanie 10
+
+Zdefiniuj predykat ostatni(X, Lista), który jest prawdziwy, jeśli X jest ostatnim elementem listy Lista.
+
+ostatni(X, [X]).
+ostatni(X, [_|T]) :- ostatni(X, T).
+
+Zadanie 11
+
+Zdefiniuj predykat odwróć(Lista, Odwrocona), który zwraca listę w odwrotnej kolejności. Na przykład odwróć([1,2,3], X) powinno zwrócić X = [3,2,1].
+
+odwroc([], []).
+odwroc([H|T], Odwrocona) :- odwroc(T, OdwroconaT), append(OdwroconaT, [H], Odwrocona).
+
+% Alternatywna wersja z akumulatorem
+odwroc(Lista, Odwrocona) :- odwroc_pomocnicza(Lista, [], Odwrocona).
+odwroc_pomocnicza([], Akumulator, Akumulator).
+odwroc_pomocnicza([H|T], Akumulator, Odwrocona) :-
+    odwroc_pomocnicza(T, [H|Akumulator], Odwrocona).
