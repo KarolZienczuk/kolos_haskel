@@ -1,0 +1,168 @@
+Zadanie 3
+
+Napisz funkcję, która pobiera listę i zwraca tę samą listę z elementami w odwróconej kolejności, nie korzystając z gotowej funkcji reverse.
+
+
+odwroc :: [a] -> [a]
+odwroc lista = pomocnicza lista []
+  where
+    pomocnicza [] odwrocona = odwrocona
+    pomocnicza (x:xs) odwrocona = pomocnicza xs (x:odwrocona)
+
+main :: IO ()
+main = do
+  let przykladowaLista = [1, 2, 3, 4, 5]
+  print $ odwroc przykladowaLista
+
+Zadanie 4
+
+Skorzystaj z mechanizmu składania list w celu utworzenia tabliczki mnożenia. Tabela powinna być listą złożoną z trójelementowych krotek. Pierwsze dwa elementy to liczby z zakresu 1..12, a trzeci to ich iloczyn.
+
+tabliczkaMnozenia :: [(Int, Int, Int)]
+tabliczkaMnozenia = [ (a, b, a * b) | a <- [1..12], b <- [1..12] ]
+
+
+main :: IO ()
+main = do
+  print tabliczkaMnozenia
+
+
+Zadanie 5
+Napisz funkcję, która generuje dwuelementowe krotki z wszystkimi możliwymi kombinacjami dwóch kolorów ze zbioru {black, white, blue, yellow, red}. Wyeliminuj wyniki typu (red,red) oraz powtórzenia typu (red, yellow) - (yellow, red).
+
+
+kombinacjeKolorow :: [(String, String)]
+kombinacjeKolorow = [ (k1, k2) | k1 <- kolory, k2 <- kolory, k1 < k2 ]
+  where
+    kolory = ["black", "white", "blue", "yellow", "red"]
+
+main :: IO ()
+main = print kombinacjeKolorow
+
+
+Zadanie 6
+Napisz następujące funkcje dla list:
+
+a) append l m , która konkatenuje listy l i m,
+
+append :: [a] -> [a] -> [a]
+append [] m = m
+append (x:xs) m = x : append xs m
+
+
+main :: IO ()
+wynik = append [1,2,3] [4,5,6]
+main = print  wynik
+
+
+b) member x l , która sprawdza, czy x jest elementem listy l,
+
+member :: Eq a => a -> [a] -> Bool
+member _ [] = False
+member x (y:ys)
+  | x == y    = True
+  | otherwise = member x ys
+
+main :: IO ()
+wynik = member 3 [1,2,3,5]
+main = print  wynik
+
+c) last l, która znajduje ostatni element w liście
+
+last1 :: [a] -> a
+last1 [x] = x
+last1 (_:xs) = last1 xs
+last1 [] = error "empty list"
+
+main :: IO ()
+
+wynik = last1 [1,2,3,5]
+main = print  wynik
+
+
+d) delete x l, która skasuje element x z listy l
+
+delete :: Eq a => a -> [a] -> [a]
+delete _ [] = []
+delete x (y:ys)
+  | x == y    = ys
+  | otherwise = y : delete x ys
+  
+main :: IO ()
+
+wynik = delete 2 [1,2,3,5]
+main = print  wynik
+
+
+e) split x l , która podzieli listę l do dwóch list l1 i l2. l1 zawiera elementy mniejsze niż x a l2 elementy większe niż x.
+
+split :: Ord a => a -> [a] -> ([a], [a])
+split x = foldr (\y (l1, l2) -> if y < x then (y:l1, l2) else (l1, y:l2)) ([],[])
+
+main :: IO ()
+
+wynik = split 3 [1,2,3,5]
+main = print  wynik
+
+
+Zadanie 7
+
+Napisz funkcję filter p l, której wartością zwracaną jest lista wszystkich elementów listy l , które spełnią predykat p. Jaki ma typ funkcja filter?
+
+filter1 :: (a -> Bool) -> [a] -> [a]
+filter1 _ [] = []
+filter1 p (x:xs)
+  | p x       = x : filter1 p xs
+  | otherwise = filter1 p xs
+
+main :: IO ()
+main = do
+  let wynik = filter1 even [1,2,3,5]
+  print wynik
+
+
+Zadanie 8
+
+Napisz funkcję onlyEven, która przyjmuje listę liczb całkowitych i zwraca listę zawierającą tylko liczby parzyste.
+
+onlyEven :: [Int] -> [Int]
+onlyEven = filter even
+
+
+main :: IO ()
+main = do
+  let wynik = onlyEven [1,2,3,5]
+  print wynik
+
+
+Zadanie 9
+
+Napisz funkcję doubleAll, która przyjmuje listę liczb całkowitych i zwraca listę, w której każda liczba jest podwojona.
+
+doubleAll :: [Int] -> [Int]
+doubleAll [] = []
+doubleAll (x:xs) = (2 * x) : doubleAll xs
+
+main :: IO ()
+main = do
+  let wynik = doubleAll [1,2,3,5]
+  print wynik
+
+
+Zadanie 10
+
+Napisz funkcję sumOfDigits, która dla danej liczby całkowitej zwróci sumę jej cyfr.
+
+
+
+sumOfDigits :: Int -> Int
+sumOfDigits 0 = 0
+sumOfDigits n = (n `mod` 10) + sumOfDigits (n `div` 10)
+
+main :: IO ()
+main = do
+  let wynik = sumOfDigits 55
+  print wynik
+
+
+
