@@ -1,0 +1,142 @@
+Zadanie 2
+
+Napisz następujące funkcje:
+
+square, która dla podanej liczby zwróci jej kwadrat.
+
+square :: Num a => a -> a
+square x = x * x
+
+main :: IO()
+main = do
+  let wynik = square 5
+  print wynik
+
+
+cube, która dla podanej liczby zwróci jej sześcian.
+
+cube :: Num a => a -> a
+cube x = x * x * x
+
+main :: IO()
+main = do
+  let wynik = cube 5
+  print wynik
+
+
+average, która przyjmuje dwie liczby i zwraca ich średnią.
+
+average :: Fractional a => a -> a -> a 
+average a b = (a + b) / 2
+
+main :: IO()
+main = do
+  let wynik = average 5 3
+  print wynik
+
+
+Zadanie 3
+
+Napisz kod rozwiązujący równanie kwadratowe. W wersji I wykorzystaj konstrukcję if..else. W wersji II skorzystaj z dozorów/strażników (konstrukcja typu "case").
+
+
+solve :: (Ord a, Floating a) => a -> a -> a -> [a] 
+solve a b c = 
+  let delta = b * b - 4 * a * c
+  in if delta < 0 then
+    []
+    else if delta == 0 then 
+      [-b / 2 * a]
+    else
+      [ (-b + sqrt delta) / (2 * a), (-b - sqrt delta) / (2 * a) ]
+
+main :: IO()
+main = do
+  let wynik = solve 1 0 (-4)
+  print wynik
+
+
+Zadanie 4
+
+Zaimplementuj funkcję obliczającą silnię.
+factorial :: Integer -> Integer 
+factorial 1 = 1
+factorial n = n * factorial (n - 1)
+
+main :: IO()
+main = do
+  let wynik = factorial 5
+  print wynik
+
+
+Zadanie 5
+
+Napisz funkcję wyznaczającą kolejne wyrazy ciągu Fibonacciego.
+
+fibonaci :: Integer -> Integer 
+fibonaci 0 = 0
+fibonaci 1 = 1
+fibonaci n = fibonaci ( n - 1) + fibonaci (n - 2)
+
+main :: IO()
+main = do
+  let wynik = fibonaci 7
+  print wynik
+
+
+Zadanie 6
+
+Napisz funkcję, która pobiera trzy liczby i zwraca różnicę między największą i najmniejszą liczbą.
+
+maxNum :: Ord a => [a] -> a
+maxNum [x] = x
+maxNum (x:x':xs) = maxNum ((if x >= x' then x else x'):xs)
+
+minNum:: Ord b => [b]-> b
+minNum [x] = x
+minNum (x:x':xs) = minNum ((if x <= x' then x else x'):xs)
+
+
+
+minmax :: (Ord a, Num a) => a -> a -> a -> a
+minmax a b c = 
+  let
+    min = minNum [a,b,c]
+    max = maxNum [a,b,c]
+  in max - min
+  
+
+main :: IO()
+main = do
+  let wynik = minmax 2 5 7
+  print wynik
+  
+
+Zadanie 7
+
+Zaimplementuj funkcję, która pobiera dwie liczby i znajduje sumę ich kwadratów.
+
+
+sumOfSquares :: Num a => a -> a -> a 
+sumOfSquares a b = (a * a) + (b * b)
+  
+
+main :: IO()
+main = do
+  let wynik = sumOfSquares 2 5 
+  print wynik
+  
+
+Zadanie 8
+
+Zaimplementuj funkcję zwracającą ostatnią cyfrę danej liczby.
+
+lastDigit :: Integral a => a -> a  
+lastDigit a = a `mod` 10
+  
+
+main :: IO()
+main = do
+  let wynik = lastDigit 534
+  print wynik
+  
