@@ -1,0 +1,38 @@
+usunPowtorzenia :: Eq a => [a] -> [a]
+usunPowtorzenia [] = []
+usunPowtorzenia (x:xs) = x : usunPowtorzenia (filtruj x xs)
+  where
+    filtruj _ [] = []
+    filtruj y (z:zs)
+      | y == z    = filtruj y zs
+      | otherwise = z : filtruj y zs
+
+Użycie:
+main :: IO ()
+main = print (usunPowtorzenia [1,2,2,3,4,3,5,1])
+
+
+
+
+
+
+usunPowtorzenia :: Eq a => [a] -> [a]
+usunPowtorzenia [] = []
+usunPowtorzenia (x:xs) = x : usunPowtorzenia (filtruj x xs)
+  where
+    filtruj _ [] = []
+    filtruj y (z:zs)
+      | y == z    = filtruj y zs
+      | otherwise = z : filtruj y zs
+
+stworzTrojke :: Eq a => [a] -> Maybe (a, a, a)
+stworzTrojke lista = case usunPowtorzenia lista of
+  (x:y:z:_) -> Just (x, y, z)
+  _         -> Nothing
+
+
+Użycie: 
+
+main :: IO ()
+main = print (stworzTrojke [1,2,2,3,4,3,5,1])
+
